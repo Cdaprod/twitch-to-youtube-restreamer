@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  restreamer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs:/app/logs
+    command: >
+      python restream.py
+      --twitch-channel ${TWITCH_CHANNEL}
+      --youtube-key ${YOUTUBE_KEY}
+      --quality ${QUALITY:-best}
+      --video-bitrate ${VIDEO_BITRATE:-4500k}
+      --audio-bitrate ${AUDIO_BITRATE:-160k}
+      --log-file /app/logs/restream.log
+      --check-interval ${CHECK_INTERVAL:-60}
+    restart: unless-stopped
